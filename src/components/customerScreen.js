@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import Customers from './customers';
-import Countries from './countries';
+import Customers from './molecules/customers';
+import Countries from './molecules/countries';
+import States from './molecules/states';
 // import { getCustomerList } from './customerService'
 
 class CustomerScreen extends Component {
@@ -10,10 +11,20 @@ class CustomerScreen extends Component {
         this.state = {
             customers: [],
             countries: [],
+            allStates: [
+                {
+                    id: 0,
+                    name: "Valid"
+                },
+                {
+                    id: 1,
+                    name: "Invalid"
+                }],
             selectedCountry: {},
-            isValid: {}
+            selectedState: {},
         };
-        this.onChange = this.onChange.bind(this);
+        this.onChangeState = this.onChangeState.bind(this);
+        this.onChangeCountry = this.onChangeCountry.bind(this);
     }
 
     componentDidMount() {
@@ -35,18 +46,39 @@ class CustomerScreen extends Component {
             .catch(console.log)
     }
 
-    getCustomerByFilter() {
-        fetch('http://demo2034740.mockable.io/customers')
-            .then(res => res.json())
-            .then((data) => this.setState({ customers: data }))
-            .catch(console.log)
+    getURIFilters() {
+        let url = 'http://demo2034740.mockable.io/customers/search?';
+        if (this.state.selectedCountry) {
+            url = url + "country=" + this.state.selectedCountry;
+        }
+        // 0 = valid, 1 = invalido, vazio = todos
+        if (this.state.states) {
+            url = (this.state.selectedCountry) ? url + "&state=" + this.state.states : url + "state=" + this.state.states;
+        }
+        console.log("url: ", url);
+        return url;
     }
 
-    onChange(event) {
+    getCustomerByFilter() {
+        const url = this.getURIFilters();
+        fetch(url)
+            .then(res => res.json())
+            .then((data) => this.setState({ customers: data }))
+            .catch(console.log())
+    }
+
+    onChangeCountry(event) {
         const index = event.target.selectedIndex;
         var optionElement = event.target.childNodes[index];
-        var id = optionElement.getAttribute('id');
+        const id = optionElement.getAttribute('id');
         this.setState({ selectedCountry: id });
+    }
+
+    onChangeState(event) {
+        const index = event.target.selectedIndex;
+        var optionElement = event.target.childNodes[index];
+        const id = optionElement.getAttribute('id');
+        this.setState({ states: id });
     }
 
     render() {
@@ -55,10 +87,14 @@ class CustomerScreen extends Component {
                 <Countries
                     title={"Select country"}
                     countries={this.state.countries}
-                    onChange={this.onChange}
+                    onChange={this.onChangeCountry}
+                />
+                <States
+                    title={"Select State"}
+                    states={this.state.allStates}
+                    onChange={this.onChangeState}
                 />
                 <Customers customers={this.state.customers} title={"Customers List"} />
-
             </div>
         )
     }

@@ -1,5 +1,5 @@
 import React from 'react'
-import Customer from './customer';
+import Customer from '../atoms/customer';
 
 const Customers = ({customers, title}) => {
     return (
