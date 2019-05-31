@@ -2,7 +2,7 @@ import React from 'react'
 
 const Customer = ({ customer }) => {
     return (
-        <div class="card">
+        <div class="table table-bordered table-hover">
             <div class="card-body">
                 <h6 class="card-subtitle mb-2 text-muted">{customer.country.name}</h6>
                 <h6 class="card-subtitle mb-2 text-muted">{customer.state}</h6>

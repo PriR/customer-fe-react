@@ -21,7 +21,7 @@ class CustomerScreen extends Component {
                     name: "Invalid"
                 }],
             selectedCountry: {},
-            selectedState: {},
+            selectedState: { id: 265 }
         };
         this.onChangeState = this.onChangeState.bind(this);
         this.onChangeCountry = this.onChangeCountry.bind(this);
@@ -30,32 +30,49 @@ class CustomerScreen extends Component {
     componentDidMount() {
         this.getCustomerList();
         this.getCountriesList();
+        // this.findCustomers()
     }
 
     getCountriesList() {
-        fetch('http://demo2034740.mockable.io/countries')
+        fetch('http://localhost:8000/countries')
             .then(res => res.json())
             .then((data) => this.setState({ countries: data }))
             .catch(console.log)
     }
 
     getCustomerList() {
-        fetch('http://demo2034740.mockable.io/customers')
+        fetch('http://localhost:8000/customers')
             .then(res => res.json())
             .then((data) => this.setState({ customers: data }))
             .catch(console.log)
     }
 
-    getURIFilters() {
-        let url = 'http://demo2034740.mockable.io/customers/search?';
-        if (this.state.selectedCountry) {
-            url = url + "country=" + this.state.selectedCountry;
-        }
-        // 0 = valid, 1 = invalido, vazio = todos
-        if (this.state.states) {
-            url = (this.state.selectedCountry) ? url + "&state=" + this.state.states : url + "state=" + this.state.states;
-        }
-        console.log("url: ", url);
+    encodeData(data) {
+        return Object.keys(data).map(function (key) {
+            return [key, data[key]].map(encodeURIComponent).join("=");
+        }).join("&");
+    }
+
+    //on click botao
+    findCustomers() {
+        let url = 'http://localhost:8000/customers';
+        // let filtersCountry = '';
+        // let filtersState = '';
+        // if (this.state.selectedCountry) {
+        //     filterCountry = "country=" + this.state.selectedCountry;
+        // }
+        // // 0 = valid, 1 = invalido, vazio = todos
+        // if (this.state.states) {
+        //     filtersState = "state=" + this.state.states;
+        // }
+        // console.log("url: ", url);
+
+        // if (filters) {
+        //     url = '/search?' + filters;
+        // }
+        const data = { country: this.state.selectedCountry, state: this.state.selectedState }
+        url = url + this.encodeDataToURL(data);
+        console.log('url: ', url);
         return url;
     }
 
@@ -83,8 +100,15 @@ class CustomerScreen extends Component {
 
     render() {
         return (
+
             <div>
-                <Countries
+                <div>
+                    <h2 align="center">San Andreas: Multiplayer</h2>
+                    <div align="center" style="{{float:left;width:300px;}}">CONTENT OF COLUMN ONE GOES HERE</div>
+                    <div align="center" class="float-left">CONTENT OF COLUMN TWO GOES HERE</div>
+                    <div align="center" class="float-left">CONTENT OF COLUMN THREE GOES HERE</div>
+                </div>
+                {/* <Countries
                     title={"Select country"}
                     countries={this.state.countries}
                     onChange={this.onChangeCountry}
@@ -95,6 +119,8 @@ class CustomerScreen extends Component {
                     onChange={this.onChangeState}
                 />
                 <Customers customers={this.state.customers} title={"Customers List"} />
+                <button className="button is-info" onClick={this.addItem}>
+                    Find Customers </button> */}
             </div>
         )
     }
