@@ -4,6 +4,8 @@ import _ from 'lodash';
 import Customers from './molecules/customers';
 import Countries from './molecules/countries';
 import States from './molecules/states';
+import { STATES, PATH, COUNTRIES, CUSTOMERS, SEARCH } from './utils/constants';
+import { SELECT_COUNTRY, SELECT_STATE, CUSTOMER_LIST, FIND_CUSTOMERS } from './utils/labels';
 // import { getCustomerList } from './customerService'
 
 class CustomerScreen extends Component {
@@ -13,15 +15,7 @@ class CustomerScreen extends Component {
         this.state = {
             customers: [],
             countries: [],
-            allStates: [
-                {
-                    id: 1,
-                    name: "Valid"
-                },
-                {
-                    id: 0,
-                    name: "Invalid"
-                }],
+            allStates: STATES,
             selectedCountry: {},
             selectedState: {}
         };
@@ -36,14 +30,14 @@ class CustomerScreen extends Component {
     }
 
     getCountriesList() {
-        fetch('http://localhost:8000/countries')
+        fetch(PATH + COUNTRIES)
             .then(res => res.json())
             .then((data) => this.setState({ countries: data }))
             .catch(console.log)
     }
 
     getCustomerList() {
-        fetch('http://localhost:8000/customers')
+        fetch(PATH + CUSTOMERS)
             .then(res => res.json())
             .then((data) => this.setState({ customers: data }))
             .catch(console.log)
@@ -51,18 +45,18 @@ class CustomerScreen extends Component {
 
     encodeData(data) {
         return Object.keys(data).map(function (key) {
-            if(!_.isEmpty(data[key])) {
+            if (!_.isEmpty(data[key])) {
                 return [key, data[key]].map(encodeURIComponent).join("=");
             }
         }).join("&");
     }
 
     findCustomers() {
-        let url = 'http://localhost:8000/customers';
+        let url = PATH;
         const data = { country: this.state.selectedCountry, state: this.state.selectedState }
         const params = this.encodeData(data);
-        if(params !== "&") {
-            url = url + '/search?' + params;
+        if (params !== "&") {
+            url = url + CUSTOMERS + SEARCH + params;
         }
         return url;
     }
@@ -93,18 +87,18 @@ class CustomerScreen extends Component {
         return (
             <div>
                 <Countries
-                    title={"Select country"}
+                    title={SELECT_COUNTRY}
                     countries={this.state.countries}
                     onChange={this.onChangeCountry}
                 />
                 <States
-                    title={"Select State"}
+                    title={SELECT_STATE}
                     states={this.state.allStates}
                     onChange={this.onChangeState}
                 />
                 <button className="button is-info" onClick={this.getCustomerByFilter}>
-                    Find Customers </button>
-                <Customers customers={this.state.customers} title={"Customers List"} />
+                    {FIND_CUSTOMERS} </button>
+                <Customers customers={this.state.customers} title={CUSTOMER_LIST} />
             </div>
         )
     }
