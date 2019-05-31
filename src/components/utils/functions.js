@@ -16,11 +16,12 @@ const getComponentId = (event) => {
 }
 
 const buildFindURL = (data) => {
-    let url = PATH;
-    
-    const params = encodeData(data); // aq
+    console.log("data: ", data);
+    let url = PATH + CUSTOMERS;
+    const params = encodeData(data);
+    console.log("params: ", params);
     if (params !== "&") {
-        url = url + CUSTOMERS + SEARCH + params;
+        return url + SEARCH + params;
     }
     return url;
 }
