@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import _ from 'lodash';
+
 import Customers from './molecules/customers';
 import Countries from './molecules/countries';
 import States from './molecules/states';
@@ -13,24 +15,24 @@ class CustomerScreen extends Component {
             countries: [],
             allStates: [
                 {
-                    id: 0,
+                    id: 1,
                     name: "Valid"
                 },
                 {
-                    id: 1,
+                    id: 0,
                     name: "Invalid"
                 }],
             selectedCountry: {},
-            selectedState: { id: 265 }
+            selectedState: {}
         };
         this.onChangeState = this.onChangeState.bind(this);
         this.onChangeCountry = this.onChangeCountry.bind(this);
+        this.getCustomerByFilter = this.getCustomerByFilter.bind(this);
     }
 
     componentDidMount() {
         this.getCustomerList();
         this.getCountriesList();
-        // this.findCustomers()
     }
 
     getCountriesList() {
@@ -49,35 +51,24 @@ class CustomerScreen extends Component {
 
     encodeData(data) {
         return Object.keys(data).map(function (key) {
-            return [key, data[key]].map(encodeURIComponent).join("=");
+            if(!_.isEmpty(data[key])) {
+                return [key, data[key]].map(encodeURIComponent).join("=");
+            }
         }).join("&");
     }
 
-    //on click botao
     findCustomers() {
         let url = 'http://localhost:8000/customers';
-        // let filtersCountry = '';
-        // let filtersState = '';
-        // if (this.state.selectedCountry) {
-        //     filterCountry = "country=" + this.state.selectedCountry;
-        // }
-        // // 0 = valid, 1 = invalido, vazio = todos
-        // if (this.state.states) {
-        //     filtersState = "state=" + this.state.states;
-        // }
-        // console.log("url: ", url);
-
-        // if (filters) {
-        //     url = '/search?' + filters;
-        // }
         const data = { country: this.state.selectedCountry, state: this.state.selectedState }
-        url = url + this.encodeDataToURL(data);
-        console.log('url: ', url);
+        const params = this.encodeData(data);
+        if(params !== "&") {
+            url = url + '/search?' + params;
+        }
         return url;
     }
 
     getCustomerByFilter() {
-        const url = this.getURIFilters();
+        const url = this.findCustomers();
         fetch(url)
             .then(res => res.json())
             .then((data) => this.setState({ customers: data }))
@@ -95,20 +86,13 @@ class CustomerScreen extends Component {
         const index = event.target.selectedIndex;
         var optionElement = event.target.childNodes[index];
         const id = optionElement.getAttribute('id');
-        this.setState({ states: id });
+        this.setState({ selectedState: id });
     }
 
     render() {
         return (
-
             <div>
-                <div>
-                    <h2 align="center">San Andreas: Multiplayer</h2>
-                    <div align="center" style="{{float:left;width:300px;}}">CONTENT OF COLUMN ONE GOES HERE</div>
-                    <div align="center" class="float-left">CONTENT OF COLUMN TWO GOES HERE</div>
-                    <div align="center" class="float-left">CONTENT OF COLUMN THREE GOES HERE</div>
-                </div>
-                {/* <Countries
+                <Countries
                     title={"Select country"}
                     countries={this.state.countries}
                     onChange={this.onChangeCountry}
@@ -118,9 +102,9 @@ class CustomerScreen extends Component {
                     states={this.state.allStates}
                     onChange={this.onChangeState}
                 />
+                <button className="button is-info" onClick={this.getCustomerByFilter}>
+                    Find Customers </button>
                 <Customers customers={this.state.customers} title={"Customers List"} />
-                <button className="button is-info" onClick={this.addItem}>
-                    Find Customers </button> */}
             </div>
         )
     }
