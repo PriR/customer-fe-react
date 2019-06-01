@@ -1,6 +1,6 @@
 import React from 'react'
 import Country from '../atoms/country';
-import { ALL_COUNTRIES } from '../utils/labels';
+import { ALL_COUNTRIES } from '../../utils/labels';
 
 const Countries = ({ countries, onChange }) => {
     return (

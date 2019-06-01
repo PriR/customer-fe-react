@@ -1,6 +1,6 @@
 import React from 'react'
 import State from '../atoms/state';
-import { ALL_STATES } from '../utils/labels';
+import { ALL_STATES } from '../../utils/labels';
 
 const States = ({ states, onChange }) => {
     return (

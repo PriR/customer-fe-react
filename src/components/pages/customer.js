@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import Countries from '../molecules/countries';
 import TableWithFinder from '../organisms/tableWithFinder';
 import States from '../molecules/states'
-import { STATES, COLUMNS_CUSTOMER_LIST, HEADER_CUSTOMER_FINDERS_LIST } from '../utils/constants';
-import { FIND } from '../utils/labels';
-import { getComponentId } from '../utils/functions';
-import { getCustomerList, getCountryList, getCustomerByFilter } from '../service/customer'
+import { STATES, COLUMNS_CUSTOMER_LIST, HEADER_CUSTOMER_FINDERS_LIST } from '../../utils/constants';
+import { FIND } from '../../utils/labels';
+import { getComponentId } from '../../utils/functions';
+import { getCustomerList, getCountryList, getCustomerByFilter } from '../../service/customer'
 
 class Customer extends Component {
 

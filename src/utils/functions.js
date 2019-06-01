@@ -2,7 +2,8 @@ import _ from 'lodash';
 import { PATH, CUSTOMERS, SEARCH } from './constants';
 
 const encodeData = (data) => {
-    return Object.keys(data).forEach(function (key) {
+    // eslint-disable-next-line 
+    return Object.keys(data).map(function (key) {
         if (!_.isEmpty(data[key])) {
             return [key, data[key]].map(encodeURIComponent).join("=");
         }
@@ -18,7 +19,6 @@ const getComponentId = (event) => {
 const buildFindURL = (data) => {
     let url = PATH + CUSTOMERS;
     const params = encodeData(data);
-    console.log("params: ", params);
     if (params !== "&") {
         return url + SEARCH + params;
     }
