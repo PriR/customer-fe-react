@@ -2,7 +2,7 @@ import React from 'react'
 import Country from '../atoms/country';
 import { ALL_COUNTRIES } from '../utils/labels';
 
-const Countries = ({ countries, title, onChange }) => {
+const Countries = ({ countries, onChange }) => {
     return (
         <div>
             <select onChange={onChange}>

@@ -2,7 +2,7 @@ import React from 'react'
 import State from '../atoms/state';
 import { ALL_STATES } from '../utils/labels';
 
-const States = ({ states, title, onChange }) => {
+const States = ({ states, onChange }) => {
     return (
         <div>
             <select onChange={onChange} >

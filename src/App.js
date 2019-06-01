@@ -1,10 +1,10 @@
 import React, {Component} from 'react';
-import CustomerScreen from './components/customerScreen';
+import Customer from './components/pages/customer';
 
 class App extends Component {
     render() {
         return (
-            <CustomerScreen />
+            <Customer />
         )
     }
 }
