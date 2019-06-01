@@ -16,7 +16,6 @@ const getComponentId = (event) => {
 }
 
 const buildFindURL = (data) => {
-    console.log("data: ", data);
     let url = PATH + CUSTOMERS;
     const params = encodeData(data);
     console.log("params: ", params);

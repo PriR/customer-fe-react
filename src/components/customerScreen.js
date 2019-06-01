@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-
+import ReactTable from 'react-table'
 
 import Customers from './molecules/customers';
 import Countries from './molecules/countries';
@@ -54,23 +54,59 @@ class CustomerScreen extends Component {
     }
 
     render() {
+        const columns = [{
+            Header: 'Name',
+            accessor: 'name'
+        }, {
+            Header: 'Phone',
+            accessor: 'phone'
+        },
+        {
+            Header: 'Valid',
+            accessor: 'state',
+            Cell: props => <span className='number'>{(props.value == "1") ? "Yes" : "No"}</span>
+        }, {
+            id: 'countryName',
+            Header: 'Country Name',
+            accessor: d => d.country.name
+        }, {
+            Header: <span>Country Code</span>,
+            accessor: 'country.code'
+        }]
         return (
             <div>
-                <Countries
-                    title={SELECT_COUNTRY}
-                    countries={this.state.countries}
-                    onChange={this.onChangeCountry}
+                <table>
+                    <thead>
+                        <tr>
+                            <th>{SELECT_COUNTRY}</th>
+                            <th>{SELECT_STATE}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td><Countries
+                                countries={this.state.countries}
+                                onChange={this.onChangeCountry}
+                            /></td>
+                            <td><States
+                                states={this.state.allStates}
+                                onChange={this.onChangeState}
+                            />
+                            </td>
+                            <td>
+                                <button className="button is-info" onClick={this.filterCustomer}>
+                                    {FIND_CUSTOMERS} </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <ReactTable
+                    data={this.state.customers}
+                    columns={columns}
                 />
-                <States
-                    title={SELECT_STATE}
-                    states={this.state.allStates}
-                    onChange={this.onChangeState}
-                />
-                <button className="button is-info" onClick={this.filterCustomer}>
-                    {FIND_CUSTOMERS} </button>
-                <Customers customers={this.state.customers} title={CUSTOMER_LIST} />
             </div>
-        )
+        );
     }
 }
 
