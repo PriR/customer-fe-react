@@ -2,7 +2,7 @@
 A React implementation for customers.
 
 ## Requirements
-* Node.js at least 8\
+* Node.js at least 8
 * npm at least 6.4.1
 
 ## Set up
