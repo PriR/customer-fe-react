@@ -27,7 +27,8 @@ $ npm start
 ```
 ## Application access
 Normally the application will start by itself after the server is started. However if it don't you can access the frontend of the application by clicking on the link below.
-*http://localhost:3000
+
+http://localhost:3000
 ## Author
 [Priscila](https://pt.linkedin.com/in/priscilar) 
 ## Built With
